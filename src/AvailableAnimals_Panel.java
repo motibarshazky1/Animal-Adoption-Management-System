@@ -28,8 +28,8 @@ import javax.swing.filechooser.FileNameExtensionFilter;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableModel;
 
+import logicalLayers.serverTunnel;
 import userInterface.Work;
-import webserver.serverTunnel;
 
 public class AvailableAnimals_Panel extends JPanel {
 	private JTable table;

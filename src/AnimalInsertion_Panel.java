@@ -14,7 +14,7 @@ import javax.swing.JTextField;
 import javax.swing.border.LineBorder;
 import javax.swing.filechooser.FileNameExtensionFilter;
 
-import webserver.serverTunnel;
+import logicalLayers.serverTunnel;
 
 import java.awt.event.ActionListener;
 import java.io.File;

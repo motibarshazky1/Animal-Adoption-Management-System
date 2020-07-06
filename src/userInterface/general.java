@@ -15,7 +15,9 @@ import java.awt.Color;
 import java.io.File;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableModel;
-import webserver.serverTunnel;
+
+import logicalLayers.serverTunnel;
+
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.Image;

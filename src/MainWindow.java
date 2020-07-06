@@ -4,11 +4,13 @@ import javax.swing.JFrame;
 import java.awt.Color;
 import javax.swing.JPanel;
 import javax.swing.JTable;
+
+import logicalLayers.*;
+
 import javax.swing.JLabel;
 import java.awt.Font;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import webserver.*;
 
 public class MainWindow {
 	private AnimalInsertion_Panel panelAnimalInsertion;
