@@ -1,15 +1,21 @@
 package userInterfaceLayer;
 
 import javax.swing.JPanel;
+
+import BussinessLayer.serverTunnel;
+
 import javax.swing.JLabel;
-import javax.swing.JOptionPane;
 
 import java.awt.Font;
-import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.awt.Color;
-import logicalLayers.serverTunnel;
 
 public class AdoptionStatistics_Panel extends JPanel {
+
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 
 	/**
 	 * Create the panel.
@@ -22,7 +28,7 @@ public class AdoptionStatistics_Panel extends JPanel {
 		
 		JLabel lblNewLabel = new JLabel("Statistics");
 		lblNewLabel.setForeground(Color.WHITE);
-		lblNewLabel.setFont(new Font("Dialog", Font.BOLD, 26));
+		lblNewLabel.setFont(new Font("Dialog", Font.BOLD, 32));
 		lblNewLabel.setBounds(290, 8, 200, 62);
 		add(lblNewLabel);
 		
@@ -215,7 +221,7 @@ public class AdoptionStatistics_Panel extends JPanel {
 		add(label_16);
 		
 		JPanel panel_4 = new JPanel();
-		panel_4.setBackground(new Color(72, 61, 139));
+		panel_4.setBackground(new Color(128, 128, 128));
 		panel_4.setBounds(10, 92, 291, 37);
 		add(panel_4);
 		panel_4.setLayout(null);
@@ -226,7 +232,7 @@ public class AdoptionStatistics_Panel extends JPanel {
 		panel_4.add(lblNewLabel_3);
 		
 		JPanel panel_5 = new JPanel();
-		panel_5.setBackground(new Color(72, 61, 139));
+		panel_5.setBackground(new Color(128, 128, 128));
 		panel_5.setBounds(457, 92, 291, 37);
 		add(panel_5);
 		panel_5.setLayout(null);
@@ -237,8 +243,11 @@ public class AdoptionStatistics_Panel extends JPanel {
 		panel_5.add(lblCats);
 		
 		   serverTunnel tunnel=null;
-		   String query="";
- 	         tunnel=new serverTunnel();
+ 	         try {
+				tunnel=serverTunnel.getInstance();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
 	         lblX.setText(tunnel.GetmaxDogAge());
       		lblY.setText(tunnel.GetminDogAge());
      		lblZ.setText(tunnel.GetAvgDogAge());
@@ -246,9 +255,9 @@ public class AdoptionStatistics_Panel extends JPanel {
      		label_9.setText(tunnel.GetminCatAge());
      		label_10.setText(tunnel.GetAvgCatAge());
      		lblNewLabel_2.setText(tunnel.GetMaleDogs());
+     		label_8.setText(tunnel.GetFemaleCats());
      		label_6.setText(tunnel.GetFemaleDogs());
      		label_7.setText(tunnel.GetMaleCats());
-     		label_6.setText(tunnel.GetFemaleCats());
      		label_12.setText(tunnel.GetOldestDog());
      		label_13.setText(tunnel.GetOldestCat());
      		label_14.setText(tunnel.GetOldestDogDate());
@@ -258,7 +267,7 @@ public class AdoptionStatistics_Panel extends JPanel {
      			label_11.setVisible(true);
          		label_16.setVisible(true);
      		}
-     		if(label_13.getText().equals("."))
+     		if(label_13.getText().equals(".") ||label_5.getText().equals("none"))
 	         	{
 	         	label_13.setVisible(false);
      		label_15.setVisible(false);
@@ -271,7 +280,7 @@ public class AdoptionStatistics_Panel extends JPanel {
      		lblIsWaitingSince.setVisible(true);
      		lblHelpHimFind.setVisible(true);
      		}
-     		if(label_12.getText().equals("."))
+     		if(label_12.getText().equals(".")||lblX.getText().equals("none"))
          	{
          	label_12.setVisible(false);
          	label_14.setVisible(false);

@@ -1,9 +1,6 @@
 package userInterfaceLayer;
 import javax.swing.ButtonGroup;
-import javax.swing.ImageIcon;
 import javax.swing.JButton;
-import javax.swing.JFileChooser;
-import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
@@ -11,51 +8,43 @@ import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.EventQueue;
 import java.awt.Font;
-import java.awt.Image;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.io.File;
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.JTextField;
-import javax.swing.border.LineBorder;
-import javax.swing.filechooser.FileNameExtensionFilter;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableModel;
 
-import logicalLayers.SendEmail;
-import logicalLayers.Trainer;
-import logicalLayers.serverTunnel;
-import userInterface.Work;
-import userInterfaceLayer.*;
+import BussinessLayer.Trainer;
+import BussinessLayer.Vet;
+import BussinessLayer.serverTunnel;
 
-import javax.swing.ScrollPaneConstants;
-import javax.swing.JRadioButton;
 import javax.swing.JComboBox;
 
 public class ProffesionalServices_Panel extends JPanel {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	private JTable table;
 	public static String path;
 	public static int next_case_id=21;
-	private JTextField textField_2;
-	private JTextField textField_3;
-	private JTextField textField_4;
+	private JTextField textField_Speciality;
+	private JTextField textField_Age;
+	private JTextField textField_Name;
 	public MainWindow window1;
-	private JTextField textField_11;
-	private FileInputStream fis;
-	private JTextField textField_13;
-	private JTextField textField_14;
-	private JTextField textField_15;
+	private JTextField textField_ID;
+	private JTextField textField_Experience;
+	private JTextField textField_Phone;
+	private JTextField textField_Address;
 	
 	/**
 	 * Create the panel.
@@ -69,22 +58,22 @@ public class ProffesionalServices_Panel extends JPanel {
 		setVisible(true);
 		JPanel panel_proffessional_details = new JPanel();
        ButtonGroup G1 = new ButtonGroup();
-		
-	
+       
        String options_gender[]={"Female","Male"};        
-  		JComboBox comboBox_1 = new JComboBox(options_gender);
-  		comboBox_1.setBounds(83, 102, 96, 21);
-  		panel_proffessional_details.add(comboBox_1);
+		JComboBox comboBox_Gender = new JComboBox(options_gender);
+
+	
   		
 			 
        String options[]={"Vet","Trainer"};        
-		JComboBox comboBox = new JComboBox(options);
+		JComboBox comboBox_Job = new JComboBox(options);
 	  
-		comboBox.setBounds(83, 17, 96, 21);
-		panel_proffessional_details.add(comboBox);
+		comboBox_Job.setBounds(83, 17, 96, 21);
+		panel_proffessional_details.add(comboBox_Job);
 		
 	
 		JButton btnNewButton_1 = new JButton("Delete");
+		btnNewButton_1.setBackground(new Color(70, 130, 180));
 
 		
 		JLabel lblNewLabel_1 = new JLabel("");
@@ -101,48 +90,69 @@ public class ProffesionalServices_Panel extends JPanel {
 		JButton btnUpdate_1 = new JButton("Update");
 		btnUpdate_1.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				try {
-					 serverTunnel tunnel= new serverTunnel();	          	   
-					 /*textField_11.setText(model.getValueAt(i, 0).toString());
-	   				    textField.setText(model.getValueAt(i, 1).toString());
-	   				    textField_1.setText(model.getValueAt(i, 2).toString());
-	   				    textField_4.setText(model.getValueAt(i, 3).toString());
-	   				    textField_13.setText(model.getValueAt(i, 4).toString());
-	   				    textField_2.setText(model.getValueAt(i, 5).toString());
-	   				    textField_3.setText(model.getValueAt(i, 6).toString());
-	   				    textField_15.setText(model.getValueAt(i, 7).toString());
-	   				    textField_14.setText(model.getValueAt(i, 8).toString());
-	   				    */
-					 String query ="UPDATE proffesional_services SET"
-					 		+ " id="+textField_11.getText()+
-							 ",Name= '"+ comboBox_1.getSelectedItem().toString()+
-							 "', Job ='"+comboBox.getSelectedItem().toString()+
-							 "',Speciality ='"+textField_4.getText()+
-							 "',Experience ="+Integer.parseInt(textField_13.getText())+
-							 ",Gender ='"+textField_2.getText()+
-							 "',Age ="+textField_3.getText()+
-							 ",Address ='"+textField_15.getText()+
-							 "',Phone ="+textField_14.getText()+
-							" WHERE id='"+textField_11.getText()+"';";
-	    			tunnel.UpdateDB(query);
-				}catch(Exception e1)
-        		{
-        			System.err.println(e1);
-    
-        		} 
-         		 JOptionPane.showMessageDialog(null, "Update in Progress.\n proccess will be finished in few seconds.\n Press ok to continue.", "Details", JOptionPane.PLAIN_MESSAGE);
-        		EventQueue.invokeLater(new Runnable() {
-					public void run() {
-						try {
-							MainWindow window = new MainWindow();
-							window.frame.setVisible(true);
-						} catch (Exception e) {
-							e.printStackTrace();
-						}
-					}
-					
-				});
+				if(textField_ID.getText().equals("") || comboBox_Job.getSelectedItem().toString().equals("") ||
+						comboBox_Gender.getSelectedItem().toString().equals("") || textField_Name.getText().equals("") ||
+						textField_Experience.getText().equals("") || textField_Speciality.getText().equals("") 	||
+					textField_Age.getText().equals("") || textField_Phone.getText().equals("") 
+					|| textField_Address.getText().equals("") )
+	        		{
+	        		 JOptionPane.showMessageDialog(null, "Please Fill all the Fields.", "Details", JOptionPane.PLAIN_MESSAGE);
+	        		}
+				else if(!textField_ID.getText().chars().allMatch(Character::isDigit) ||
+						Integer.parseInt(textField_ID.getText())<0  ||
+						!textField_Age.getText().chars().allMatch(Character::isDigit) ||
+						Integer.parseInt(textField_Age.getText())<0 ||
+						!textField_Experience.getText().chars().allMatch(Character::isDigit) ||
+						Integer.parseInt(textField_Experience.getText())<0  ||
+						!textField_Phone.getText().chars().allMatch(Character::isDigit) ||
+						Integer.parseInt(textField_Phone.getText())<0 
+	
+						)
+        				JOptionPane.showMessageDialog(null, "Age,ID,Experience,phone must contains only digits .", "Details", JOptionPane.PLAIN_MESSAGE);
+
+        		
+	        		else
+	        		{
+						
+					serverTunnel tunnel=null;
+		       		try {
+			 				 tunnel= serverTunnel.getInstance();				 			
+		      
+		       		}catch(Exception e1)
+			     		{
+			     			System.err.println(e1);
+
+			     		} 
+		       		if(comboBox_Job.getSelectedItem().toString().equals("Vet"))
+		       		{
+		       			Vet vet=new Vet(Integer.parseInt(textField_ID.getText()),
+	        					textField_Name.getText(),
+	        					comboBox_Gender.getSelectedItem().toString(),
+	        					Integer.parseInt(textField_Age.getText()),
+	        					textField_Speciality.getText(),
+	        					Integer.parseInt(textField_Experience.getText()),
+	        					Integer.parseInt(textField_Phone.getText()),
+	        					textField_Address.getText()
+	        					);
+		 				 tunnel.UpdateProffInDB(vet);
+		       		}
+		       		else
+		       		{
+		       			Trainer trainer=new Trainer(Integer.parseInt(textField_ID.getText()),
+	        					textField_Name.getText(),
+	        					comboBox_Gender.getSelectedItem().toString(),
+	        					Integer.parseInt(textField_Age.getText()),
+	        					textField_Speciality.getText(),
+	        					Integer.parseInt(textField_Experience.getText()),
+	        					Integer.parseInt(textField_Phone.getText()),
+	        					textField_Address.getText()
+	        					);
+		 				 tunnel.UpdateProffInDB(trainer);
+		       		}
+	        		}
 			}
+			
+			
 		});
 		btnUpdate_1.setBackground(new Color(70, 130, 180));
 		btnUpdate_1.setBounds(224, 180, 85, 27);
@@ -151,7 +161,7 @@ public class ProffesionalServices_Panel extends JPanel {
 								
 		JPanel panel = new JPanel();
 		panel.setBackground(new Color(0, 139, 139));
-		panel.setBounds(10, 76, 679, 214);
+		panel.setBounds(64, 76, 679, 214);
 		add(panel);
 		panel.setLayout(new BorderLayout(0, 0));
 		JScrollPane scrollPane = new JScrollPane();
@@ -178,28 +188,29 @@ public class ProffesionalServices_Panel extends JPanel {
 					
 	   			 btnUpdate_1.setVisible(true);
 	   			btnNewButton.setVisible(false);
-	   			  		  textField_11.setText(model.getValueAt(i, 0).toString());
-	   			  		comboBox_1.setSelectedItem(model.getValueAt(i, 1).toString());
-		   				 comboBox.setSelectedItem((model.getValueAt(i, 2).toString()));
-		   				    textField_4.setText(model.getValueAt(i, 3).toString());
-		   				    textField_13.setText(model.getValueAt(i, 4).toString());
-		   				    textField_2.setText(model.getValueAt(i, 5).toString());
-		   				    textField_3.setText(model.getValueAt(i, 6).toString());
-		   				    textField_14.setText(model.getValueAt(i, 7).toString());
-		   				    textField_15.setText(model.getValueAt(i, 8).toString());
+	   			////ffffff
+	   			  		  textField_ID.setText(model.getValueAt(i, 0).toString());
+	   			  		comboBox_Gender.setSelectedItem(model.getValueAt(i, 1).toString());
+		   				 comboBox_Job.setSelectedItem((model.getValueAt(i, 2).toString()));
+		   				    textField_Name.setText(model.getValueAt(i, 1).toString());
+		   				    textField_Experience.setText(model.getValueAt(i, 4).toString());
+		   				    textField_Speciality.setText(model.getValueAt(i, 3).toString());
+		   				    textField_Age.setText(model.getValueAt(i, 6).toString());
+		   				    textField_Phone.setText(model.getValueAt(i, 7).toString());
+		   				    textField_Address.setText(model.getValueAt(i, 8).toString());
 
 	   			  
 	   			  		if(lblNewLabel_1.getText().equals("New Record"))
 	   			  		{
-	   			  		  textField_11.setText("");
-	   			  		comboBox_1.setSelectedItem("");
-		   				 comboBox.setSelectedItem("");
-		   				    textField_4.setText("");
-		   				    textField_13.setText("");
-		   				    textField_2.setText("");
-		   				    textField_3.setText("");
-		   				    textField_15.setText("");
-		   				    textField_14.setText("");
+	   			  		  textField_ID.setText("");
+	   			  		comboBox_Gender.setSelectedItem("");
+		   				 comboBox_Job.setSelectedItem("");
+		   				    textField_Name.setText("");
+		   				    textField_Experience.setText("");
+		   				    textField_Speciality.setText("");
+		   				    textField_Age.setText("");
+		   				    textField_Address.setText("");
+		   				    textField_Phone.setText("");
 		   					    
 	   			  		}
 	   			    	 
@@ -226,10 +237,10 @@ public class ProffesionalServices_Panel extends JPanel {
 								
 								
 								
-								textField_4 = new JTextField();
-								textField_4.setBounds(83, 140, 96, 20);
-								panel_proffessional_details.add(textField_4);
-								textField_4.setColumns(10);
+								textField_Name = new JTextField();
+								textField_Name.setBounds(83, 103, 96, 20);
+								panel_proffessional_details.add(textField_Name);
+								textField_Name.setColumns(10);
 								
 								JLabel lblExperience = new JLabel("Speciality");
 								lblExperience.setForeground(new Color(255, 255, 255));
@@ -245,7 +256,7 @@ public class ProffesionalServices_Panel extends JPanel {
 								
 								JLabel label_2 = new JLabel("Gender");
 								label_2.setForeground(new Color(255, 255, 255));
-								label_2.setBounds(265, 21, 49, 14);
+								label_2.setBounds(248, 21, 49, 14);
 								panel_proffessional_details.add(label_2);
 								label_2.setFont(new Font("David", Font.BOLD, 13));
 								
@@ -264,60 +275,84 @@ public class ProffesionalServices_Panel extends JPanel {
 										panel_proffessional_details.add(label);
 										label.setFont(new Font("David", Font.BOLD, 13));
 		
-		textField_2 = new JTextField();
-		textField_2.setBounds(312, 13, 96, 20);
-		panel_proffessional_details.add(textField_2);
-		textField_2.setColumns(10);
+		textField_Speciality = new JTextField();
+		textField_Speciality.setBounds(83, 140, 96, 20);
+		panel_proffessional_details.add(textField_Speciality);
+		textField_Speciality.setColumns(10);
 		
-		textField_3 = new JTextField();
-		textField_3.setBounds(312, 55, 96, 20);
-		panel_proffessional_details.add(textField_3);
-		textField_3.setColumns(10);
+		textField_Age = new JTextField();
+		textField_Age.setBounds(312, 55, 96, 20);
+		panel_proffessional_details.add(textField_Age);
+		textField_Age.setColumns(10);
 	
 		btnNewButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				if(textField_11.getText().equals("") || comboBox.getSelectedItem().toString().equals("") ||
-						comboBox_1.getSelectedItem().toString().equals("") || textField_4.getText().equals("") ||
-						textField_13.getText().equals("") || textField_2.getText().equals("") 	||
-					textField_3.getText().equals("") || textField_14.getText().equals("") 
-					|| textField_15.getText().equals("") )
+				if(textField_ID.getText().equals("") || comboBox_Job.getSelectedItem().toString().equals("") ||
+						comboBox_Gender.getSelectedItem().toString().equals("") || textField_Name.getText().equals("") ||
+						textField_Experience.getText().equals("") || textField_Speciality.getText().equals("") 	||
+					textField_Age.getText().equals("") || textField_Phone.getText().equals("") 
+					|| textField_Address.getText().equals("") )
 	        		{
 	        		 JOptionPane.showMessageDialog(null, "Please Fill all the Fields.", "Details", JOptionPane.PLAIN_MESSAGE);
 	        		}
+				else if(!textField_ID.getText().chars().allMatch(Character::isDigit) ||
+						Integer.parseInt(textField_ID.getText())<0  ||
+						!textField_Age.getText().chars().allMatch(Character::isDigit) ||
+						Integer.parseInt(textField_Age.getText())<0 ||
+						!textField_Experience.getText().chars().allMatch(Character::isDigit) ||
+						Integer.parseInt(textField_Experience.getText())<0  ||
+						!textField_Phone.getText().chars().allMatch(Character::isDigit) ||
+						Integer.parseInt(textField_Phone.getText())<0 
+	
+						
+						)
+        				JOptionPane.showMessageDialog(null, "Age,ID,Experience,phone must contains only digits .", "Details", JOptionPane.PLAIN_MESSAGE);
+
+        	
+        		
 	        		else
 	        		{
-	        			Trainer trainer=new Trainer(Integer.parseInt(textField_11.getText()),
-	        					comboBox_1.getSelectedItem().toString(),
-	        					textField_4.getText(),
-	        					Integer.parseInt(textField_13.getText()),
-	        					textField_2.getText(),
-	        					Integer.parseInt(textField_3.getText()),
-	        					Integer.parseInt(textField_14.getText()),
-	        					textField_15.getText()
-	        					);
-	        			String query="Insert into proffesional_services (ID,Name,Job,Speciality,Experience,Gender,Age,Phone,Address) values ("
-	        					+trainer.GetId()+",'"+trainer.GetName()+"','"+comboBox.getSelectedItem().toString()+"','"+trainer.GetSpeciality()+"',"+trainer.GetExperience()+",'"
-	        							+trainer.GetGender()+"',"+trainer.GetAge()+","+trainer.GetPhoneNumber()+",'"+trainer.GetAddress()+"');";
-	        			;
-	        			       		try {
-	        				 				serverTunnel tunnel= new serverTunnel();
-	        			       				tunnel.InsertCommand(query);
-	        			       		}catch(Exception e1)
-	        				     		{
-	        				     			System.err.println(e1);
+	        			serverTunnel tunnel=null;
+			       		try {
+				 				 tunnel= serverTunnel.getInstance();				 			
+			      
+			       		}catch(Exception e1)
+				     		{
+				     			System.err.println(e1);
 
-	        				     		} 
-	        			       		EventQueue.invokeLater(new Runnable() { // open new window to see the changes
-	        							public void run() {
-	        								try {
-	        									MainWindow window = new MainWindow();
-	        									window.frame.setVisible(true);
-	        								} catch (Exception e) {
-	        									e.printStackTrace();
-	        								}
-	        							}
-	        						
-	        						});
+				     		} 
+			       		if(comboBox_Job.getSelectedItem().toString().equals("Vet"))
+			       		{
+			       			Vet vet=new Vet(Integer.parseInt(textField_ID.getText()),
+		        					textField_Name.getText(),
+		        					comboBox_Gender.getSelectedItem().toString(),
+		        					Integer.parseInt(textField_Age.getText()),
+		        					textField_Speciality.getText(),
+		        					Integer.parseInt(textField_Experience.getText()),
+		        					Integer.parseInt(textField_Phone.getText()),
+		        					textField_Address.getText()
+		        					);
+			 				 tunnel.ProffToDB(vet);
+			       		}
+			       		else
+			       		{
+			       			Trainer trainer=new Trainer(Integer.parseInt(textField_ID.getText()),
+		        					textField_Name.getText(),
+		        					comboBox_Gender.getSelectedItem().toString(),
+		        					Integer.parseInt(textField_Age.getText()),
+		        					textField_Speciality.getText(),
+		        					Integer.parseInt(textField_Experience.getText()),
+		        					Integer.parseInt(textField_Phone.getText()),
+		        					textField_Address.getText()
+		        					);
+			 				 tunnel.ProffToDB(trainer);
+			       		}
+	        			
+
+	        
+
+	        			
+	        			       	
 	        		}
 	        		
 	    
@@ -332,10 +367,10 @@ public class ProffesionalServices_Panel extends JPanel {
 		lblId.setBounds(10, 61, 49, 14);
 		panel_proffessional_details.add(lblId);
 		
-		textField_11 = new JTextField();
-		textField_11.setColumns(10);
-		textField_11.setBounds(83, 58, 96, 20);
-		panel_proffessional_details.add(textField_11);
+		textField_ID = new JTextField();
+		textField_ID.setColumns(10);
+		textField_ID.setBounds(83, 58, 96, 20);
+		panel_proffessional_details.add(textField_ID);
 		
 		
 	
@@ -345,10 +380,10 @@ public class ProffesionalServices_Panel extends JPanel {
 		lblExperience_1.setBounds(10, 187, 75, 14);
 		panel_proffessional_details.add(lblExperience_1);
 		
-		textField_13 = new JTextField();
-		textField_13.setColumns(10);
-		textField_13.setBounds(83, 184, 96, 20);
-		panel_proffessional_details.add(textField_13);
+		textField_Experience = new JTextField();
+		textField_Experience.setColumns(10);
+		textField_Experience.setBounds(83, 184, 96, 20);
+		panel_proffessional_details.add(textField_Experience);
 		
 		JLabel lblPhoneNumber = new JLabel("Phone Number");
 		lblPhoneNumber.setForeground(Color.WHITE);
@@ -356,10 +391,10 @@ public class ProffesionalServices_Panel extends JPanel {
 		lblPhoneNumber.setBounds(224, 143, 90, 14);
 		panel_proffessional_details.add(lblPhoneNumber);
 		
-		textField_14 = new JTextField();
-		textField_14.setColumns(10);
-		textField_14.setBounds(312, 140, 96, 20);
-		panel_proffessional_details.add(textField_14);
+		textField_Phone = new JTextField();
+		textField_Phone.setColumns(10);
+		textField_Phone.setBounds(312, 140, 96, 20);
+		panel_proffessional_details.add(textField_Phone);
 		
 		JLabel lblAddress = new JLabel("Address");
 		lblAddress.setForeground(Color.WHITE);
@@ -367,39 +402,49 @@ public class ProffesionalServices_Panel extends JPanel {
 		lblAddress.setBounds(243, 106, 90, 14);
 		panel_proffessional_details.add(lblAddress);
 		
-		textField_15 = new JTextField();
-		textField_15.setColumns(10);
-		textField_15.setBounds(312, 103, 96, 20);
-		panel_proffessional_details.add(textField_15);
+		textField_Address = new JTextField();
+		textField_Address.setColumns(10);
+		textField_Address.setBounds(312, 103, 96, 20);
+		panel_proffessional_details.add(textField_Address);
 		
 		btnNewButton_1.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				try {
-					 serverTunnel tunnel= new serverTunnel();	          	   
+					 serverTunnel tunnel= serverTunnel.getInstance();	    
+					if(comboBox_Job.getSelectedItem().toString().equals("VET"))
+					{
+						Vet vet=new Vet(Integer.parseInt(textField_ID.getText()),textField_Name.getText(),
+								comboBox_Gender.getSelectedItem().toString(),Integer.parseInt(textField_Age.getText()),
+								textField_Speciality.getText(),Integer.parseInt(textField_Experience.getText()),
+										Integer.parseInt(textField_Phone.getText()),textField_Address.getText());
+						 tunnel.DeleteProffFromDB(vet);
+
+					}
+					else
+					{
+
+						Trainer trainer=new Trainer(Integer.parseInt(textField_ID.getText()),textField_Name.getText(),
+								comboBox_Gender.getSelectedItem().toString(),Integer.parseInt(textField_Age.getText()),
+								textField_Speciality.getText(),Integer.parseInt(textField_Experience.getText()),
+										Integer.parseInt(textField_Phone.getText()),textField_Address.getText());
+						 tunnel.DeleteProffFromDB(trainer);
+
+					}
 					
-					 String query ="Delete from proffesional_services WHERE ID="+Integer.parseInt(textField_11.getText())+";";
-	    			tunnel.InsertCommand(query);
+				
+					
 				}catch(Exception e1)
        		{
        			System.err.println(e1);
    
        		} 
-        		 JOptionPane.showMessageDialog(null, "Delete Action in Progress.\n proccess will be finished in few seconds.\n Press ok to continue.", "Details", JOptionPane.PLAIN_MESSAGE);
-       		EventQueue.invokeLater(new Runnable() {
-					public void run() {
-						try {
-							MainWindow window = new MainWindow();
-							window.frame.setVisible(true);
-						} catch (Exception e) {
-							e.printStackTrace();
-						}
-					}
-					
-				});
+				 
 			}
 		});
 		btnNewButton_1.setBounds(364, 180, 85, 27);
 		panel_proffessional_details.add(btnNewButton_1);
+		comboBox_Gender.setBounds(312, 17, 96, 21);
+		panel_proffessional_details.add(comboBox_Gender);
 		
 	  
 		
@@ -412,6 +457,7 @@ public class ProffesionalServices_Panel extends JPanel {
 	   			btnNewButton_1.setVisible(true);
 	   			btnUpdate_1.setVisible(true);
 	   			btnNewButton.setVisible(false);
+	   			panel_proffessional_details.setVisible(true);
 
 
 			}
@@ -431,15 +477,15 @@ public class ProffesionalServices_Panel extends JPanel {
 				panel_proffessional_details.setVisible(true);
 				lblNewLabel_1.setText("New Record");
 		
-			  		  textField_11.setText("");
-   				    comboBox_1.setSelectedItem("");
-   				 comboBox.setSelectedItem("");
-   				    textField_4.setText("");
-   				    textField_13.setText("");
-   				    textField_2.setText("");
-   				    textField_3.setText("");
-   				    textField_15.setText("");
-   				    textField_14.setText("");
+			  		  textField_ID.setText("");
+   				    comboBox_Gender.setSelectedItem("");
+   				 comboBox_Job.setSelectedItem("");
+   				    textField_Name.setText("");
+   				    textField_Experience.setText("");
+   				    textField_Speciality.setText("");
+   				    textField_Age.setText("");
+   				    textField_Address.setText("");
+   				    textField_Phone.setText("");
    				
 
 			}
@@ -479,21 +525,43 @@ for( int i = model1.getRowCount() - 1; i >= 0; i-- )
 {
     model1.removeRow(i);
 }
-for(int i = 0; i < getUsers().size(); i++){
-	String[] parts = getUsers().get(i).split(","); // String array, each element is text between dots
+serverTunnel tunnel=null;
+try {
+	tunnel = serverTunnel.getInstance();
+} catch (SQLException e1) {
+	// TODO Auto-generated catch block
+	e1.printStackTrace();
+}
+ArrayList<Vet> vets=tunnel.getVets();
+for(int i = 0; i < vets.size(); i++){
 
-    rowData[0] =parts[0];
-     rowData[1] = parts[1];
-      rowData[2] = parts[2];
-      rowData[3] = parts[3];
-      rowData[4] = parts[4];
-      rowData[5] = parts[5];
-      rowData[6] = parts[6];
-      rowData[7] = parts[7];
-      rowData[8] = parts[8];
+    rowData[0] =vets.get(i).GetId();
+     rowData[1] = vets.get(i).GetName();
+
+      rowData[2] = "VET";
+      rowData[3] = vets.get(i).GetSpecialty();
+      rowData[4] = vets.get(i).GetExperience();
+      rowData[5] =  vets.get(i).GetGender();
+      rowData[6] =  vets.get(i).GetAge();
+      rowData[7] =  vets.get(i).getPhone();
+      rowData[8] =  vets.get(i).getAddress();
        model1.addRow(rowData);
-	    table.setModel(model1);
-      
+	    table.setModel(model1);  
+}
+ArrayList<Trainer> trainers=tunnel.getTrainers();
+for(int i = 0; i < trainers.size(); i++){
+
+    rowData[0] =trainers.get(i).GetId();
+     rowData[1] = trainers.get(i).GetName();
+      rowData[2] = "Trainer";
+      rowData[3] = trainers.get(i).GetSpecialty();
+      rowData[4] = trainers.get(i).GetExperience();
+      rowData[5] =  trainers.get(i).GetGender();
+      rowData[6] =  trainers.get(i).GetAge();
+      rowData[7] =  trainers.get(i).GetPhoneNumber();
+      rowData[8] =  trainers.get(i).GetAddress();
+       model1.addRow(rowData);
+	    table.setModel(model1);  
 }
 
 
@@ -505,50 +573,6 @@ for(int i = 0; i < getUsers().size(); i++){
 		    
 		    
 	}
-	 static ArrayList<String> getUsers(){
-	      
-	      ArrayList<String> preoffesionls = new ArrayList<String>();
-	      
-	      ResultSet rs;
-	      String query;
-	      String u;
-	      
-	      try {
-	          
-	          
-	          	serverTunnel tunnel= new serverTunnel();
-	       	
-	          
-    		 query = "SELECT * FROM proffesional_services order by Job,Experience DESC";
-
-			 //else  query = "SELECT * FROM proffesional_services";
-
-			 
-	    		 rs = tunnel.SelectCommand(query);
-	    		 
-	          
-	          while(rs.next()){
-	     		
-	              u =  ""+
-	                      rs.getInt("ID")+","+
-	                      rs.getString("Name")+","+
-	                      rs.getString("Job")+","+
-	                      rs.getString("Speciality")+","+
-	                      rs.getInt("Experience")+","+
-	                      rs.getString("Gender")+","+
-	                      rs.getInt("Age")+","+
-	                      rs.getInt("Phone")+","+
-                  rs.getString("Address");
-
-
-	              preoffesionls.add(u);
-	          }
-	           
-	      } catch (SQLException ex) {
-	          Logger.getLogger(Work.class.getName()).log(Level.SEVERE, null, ex);
-	      }
-
-	      return preoffesionls;
-	  }
+	
 }
 	

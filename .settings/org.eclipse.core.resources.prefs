@@ -1,11 +1,13 @@
 eclipse.preferences.version=1
-encoding//src/AnimalInsertion_Panel.java=UTF-8
-encoding//src/AvailableAnimals_Panel.java=UTF-8
+encoding//src/BussinessLayer/serverTunnel.java=UTF-8
 encoding//src/dataLayer/db_connection.java=UTF-8
-encoding//src/logicalLayers/serverTunnel.java=UTF-8
-encoding//src/userInterface/general.java=UTF-8
+encoding//src/userInterfaceLayer/AdoptionHistory_Panel.java=UTF-8
 encoding//src/userInterfaceLayer/AdoptionStatistics_Panel.java=UTF-8
 encoding//src/userInterfaceLayer/AnimalInsertion_Panel.java=UTF-8
 encoding//src/userInterfaceLayer/AvailableAnimals_Panel.java=UTF-8
+encoding//src/userInterfaceLayer/Home_Panel.java=UTF-8
 encoding//src/userInterfaceLayer/Login_Panel.java=UTF-8
+encoding//src/userInterfaceLayer/MainWindow.java=UTF-8
+encoding//src/userInterfaceLayer/Management_Panel.java=UTF-8
 encoding//src/userInterfaceLayer/ProffesionalServices_Panel.java=UTF-8
+encoding//src/userInterfaceLayer/WaitingList_Panel.java=UTF-8

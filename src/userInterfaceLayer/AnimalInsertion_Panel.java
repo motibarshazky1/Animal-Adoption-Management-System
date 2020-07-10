@@ -1,47 +1,40 @@
 package userInterfaceLayer;
 import javax.swing.JPanel;
+import javax.swing.ButtonGroup;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFileChooser;
-import javax.swing.JFrame;
-
 import java.awt.Color;
 import java.awt.EventQueue;
-
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
-
 import java.awt.Font;
-import java.awt.Frame;
 import java.awt.Image;
-
 import javax.swing.JTextField;
 import javax.swing.border.LineBorder;
 import javax.swing.filechooser.FileNameExtensionFilter;
-
-import logicalLayers.Animal;
-import logicalLayers.AnimalFactory;
-import logicalLayers.serverTunnel;
-
+import BussinessLayer.Animal;
+import BussinessLayer.AnimalFactory;
+import BussinessLayer.serverTunnel;
 import java.awt.event.ActionListener;
-import java.awt.event.WindowEvent;
 import java.io.File;
-import java.io.FileInputStream;
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.awt.event.ActionEvent;
-import javax.swing.SwingConstants;
 import javax.swing.JComboBox;
+import javax.swing.JRadioButton;
 
 public class AnimalInsertion_Panel extends JPanel {
+	/**
+	 * 
+	 */
+    private int injeqtion;
+	private static final long serialVersionUID = 1L;
 	public static String path;
+	public File selectedFile;
 	public static int next_id;
-	private JTextField textField;
-	private JTextField textField_3;
-	private JTextField textField_4;
-	private Image image=new ImageIcon(getClass().getResource("/pics/1741491.png")).getImage().getScaledInstance(90, 90, Image.SCALE_SMOOTH);
+	private JTextField textField_Name;
+	private JTextField textField_Age;
+	private Boolean File_Choosed=false;
 
 
 	/**
@@ -54,68 +47,112 @@ public class AnimalInsertion_Panel extends JPanel {
 		setBounds(219, 0, 758, 545);
 		setLayout(null);
 		
-		  String options_gender[]={"Female","Male"};        
-		JComboBox comboBox_1 = new JComboBox(options_gender);
-	    comboBox_1.setBounds(256, 232, 96, 21);
-	    add(comboBox_1);
-		
-		  String options[]={"DOG","CAT"};        
-		    JComboBox comboBox = new JComboBox(options);
-		    comboBox.setBounds(256, 155, 96, 21);
-		    add(comboBox);
-		
-		JLabel label = new JLabel("Name");
-		label.setForeground(new Color(255, 255, 255));
-		label.setFont(new Font("Dialog", Font.BOLD, 20));
-		label.setBounds(179, 194, 59, 17);
-		add(label);
-		
-		JLabel label_1 = new JLabel("Type");
-		label_1.setForeground(new Color(255, 255, 255));
-		label_1.setFont(new Font("Dialog", Font.BOLD, 20));
-		label_1.setBounds(179, 151, 59, 20);
-		add(label_1);
-		
-		JLabel label_2 = new JLabel("Gender");
-		label_2.setForeground(new Color(255, 255, 255));
-		label_2.setFont(new Font("Dialog", Font.BOLD, 20));
-		label_2.setBounds(171, 221, 78, 34);
-		add(label_2);
-		
-		JLabel label_3 = new JLabel("Age");
-		label_3.setForeground(new Color(255, 255, 255));
-		label_3.setFont(new Font("Dialog", Font.BOLD, 20));
-		label_3.setBounds(191, 276, 59, 26);
-		add(label_3);
-		
-		JLabel label_4 = new JLabel("Hisun");
-		label_4.setForeground(new Color(255, 255, 255));
-		label_4.setFont(new Font("Dialog", Font.BOLD, 20));
-		label_4.setBounds(188, 319, 62, 34);
-		add(label_4);
+		// comboBox_Type Deceleration & settings
+	    String options_guide[]={"YES","NO"};
 	    
-		textField = new JTextField();
-		textField.setColumns(10);
-		textField.setBounds(256, 191, 96, 20);
-		add(textField);
+		// comboBox_Gender Deceleration & settings
+		  String options_gender[]={"Female","Male"};        
+		JComboBox comboBox_Gender = new JComboBox(options_gender);
+	    comboBox_Gender.setBounds(256, 232, 96, 21);
+	    add(comboBox_Gender);
+
+		// comboBox_Type Deceleration & settings
+		  String options[]={"DOG","CAT"};        
+		    JComboBox comboBox_Type = new JComboBox(options);
+		    comboBox_Type.setBounds(256, 155, 96, 21);
+		    add(comboBox_Type);
+		  
+		   
+		    
 		
-		textField_3 = new JTextField();
-		textField_3.setColumns(10);
-		textField_3.setBounds(256, 281, 96, 20);
-		add(textField_3);
-		
-		
-		
-		textField_4 = new JTextField();
-		textField_4.setColumns(10);
-		textField_4.setBounds(256, 331, 96, 20);
-		add(textField_4);
-		
-		JButton btnUploadPicture = new JButton("Upload Picture");
-		btnUploadPicture.addActionListener(new ActionListener() {
+		 // Picture label Deceleration & settings
+			JLabel Label_Picture = new JLabel("");
+			Label_Picture.setBounds(398, 151, 268, 192);
+			Label_Picture.setBorder(new LineBorder(new Color(0, 0, 0), 1));
+			add(Label_Picture);
+			setVisible(false);
 			
+			// Name label Deceleration & settings
+		JLabel Label_Name = new JLabel("Name");
+		Label_Name.setForeground(new Color(255, 255, 255));
+		Label_Name.setFont(new Font("Dialog", Font.BOLD, 20));
+		Label_Name.setBounds(179, 194, 59, 17);
+		add(Label_Name);
+		
+		// Type label Deceleration & settings
+		JLabel Label_Type = new JLabel("Type");
+		Label_Type.setForeground(new Color(255, 255, 255));
+		Label_Type.setFont(new Font("Dialog", Font.BOLD, 20));
+		Label_Type.setBounds(179, 151, 59, 26);
+		add(Label_Type);
+		
+		// Gender label Deceleration & settings
+		JLabel Label_Gender = new JLabel("Gender");
+		Label_Gender.setForeground(new Color(255, 255, 255));
+		Label_Gender.setFont(new Font("Dialog", Font.BOLD, 20));
+		Label_Gender.setBounds(171, 221, 78, 34);
+		add(Label_Gender);
+		
+		// Age label Deceleration & settings
+		JLabel Label_Age = new JLabel("Age");
+		Label_Age.setForeground(new Color(255, 255, 255));
+		Label_Age.setFont(new Font("Dialog", Font.BOLD, 20));
+		Label_Age.setBounds(191, 276, 59, 26);
+		add(Label_Age);
+		
+		// Injeqtion label Deceleration & settings
+		JLabel lblInjeqtion = new JLabel("Injection");
+		lblInjeqtion.setForeground(new Color(255, 255, 255));
+		lblInjeqtion.setFont(new Font("Dialog", Font.BOLD, 20));
+		lblInjeqtion.setBounds(154, 322, 96, 34);
+		add(lblInjeqtion);
+	    
+		// Naem text field Deceleration & settings
+		textField_Name = new JTextField();
+		textField_Name.setColumns(10);
+		textField_Name.setBounds(256, 191, 96, 20);
+		add(textField_Name);
+		
+		
+		// Age text field Deceleration & settings
+		textField_Age = new JTextField();
+		textField_Age.setColumns(10);
+		textField_Age.setBounds(256, 281, 96, 20);
+		add(textField_Age);
+		
+		
+		
+		  JRadioButton rdbtnNewRadioButton = new JRadioButton("YES");
+		  rdbtnNewRadioButton.setBackground(new Color(47, 79, 79));
+		  rdbtnNewRadioButton.setForeground(new Color(255, 255, 255));
+		    rdbtnNewRadioButton.setBounds(275, 322, 103, 21);
+		    add(rdbtnNewRadioButton);
+		    
+		    JRadioButton rdbtnNo = new JRadioButton("NO");
+		    rdbtnNo.setBackground(new Color(47, 79, 79));
+		    rdbtnNo.setForeground(new Color(255, 255, 255));
+		    rdbtnNo.setBounds(275, 345, 103, 21);
+		    add(rdbtnNo);
+		    rdbtnNo.setSelected(true);
+
+
+		       //Group the radio buttons.
+		    ButtonGroup group = new ButtonGroup();
+		    group.add(rdbtnNewRadioButton);
+		    group.add(rdbtnNo);
+		    
+		    
+
+		    
+		
+		// UploadPicture Button  Deceleration & settings
+		JButton btn_UploadPicture = new JButton("Upload Picture");
+		btn_UploadPicture.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
+				
+			
+
    	    		JFileChooser file = new JFileChooser();
    	            file.setCurrentDirectory(new File(System.getProperty("user.home")));
    	            //filter the files
@@ -124,13 +161,20 @@ public class AnimalInsertion_Panel extends JPanel {
    	            int result = file.showSaveDialog(null);
    	             //if the user click on save in Jfilechooser
    	            if(result == JFileChooser.APPROVE_OPTION){
-   	                File selectedFile = file.getSelectedFile();
+   	            	 File_Choosed=true;
+   	                 selectedFile = file.getSelectedFile();
    	                path = selectedFile.getAbsolutePath();
-   	       		 JOptionPane.showMessageDialog(null, path, "מילוי שדות", JOptionPane.PLAIN_MESSAGE);
    	       		ImageIcon icon = new ImageIcon(path);
    	       		Image dabImage=icon.getImage();
-   	       		Image newImage=dabImage.getScaledInstance(150,150,1);
+   	       		Image newImage=dabImage.getScaledInstance(Label_Picture.getWidth(),Label_Picture.getHeight(),1);
+          		ImageIcon newImage1 = new ImageIcon(newImage);
+   	       		Label_Picture.setIcon(newImage1);
+   				Label_Picture.setBorder(new LineBorder(new Color(0, 0, 0), 2));
 
+   				
+   			
+   				
+   	  
    	            }
    	             //if the user click on save in Jfilechooser
 
@@ -139,39 +183,70 @@ public class AnimalInsertion_Panel extends JPanel {
    	                System.out.println("No File Select");
    	            }
    	    		
-   	    		
    	    	}				
 			
 		});
+		btn_UploadPicture.setBackground(new Color(70, 130, 180));
+		btn_UploadPicture.setBounds(305, 430, 120, 46);
+		add(btn_UploadPicture);
 		
-		JButton btnSave = new JButton("Save");
-		btnSave.addActionListener(new ActionListener() {
+		
+		
+		
+		// Save Button  Deceleration & settings
+		JButton btn_Save = new JButton("Save");
+		btn_Save.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				if(textField.getText().equals("") || comboBox.getSelectedItem().toString().equals("") || comboBox_1.getSelectedItem().toString().equals("") || textField_3.getText().equals(""))
+				if(textField_Name.getText().equals("") ||
+						comboBox_Type.getSelectedItem().toString().equals("") || 
+						comboBox_Gender.getSelectedItem().toString().equals("") ||
+						textField_Age.getText().equals("") ||File_Choosed==false)
    	     		{
-   	     		 JOptionPane.showMessageDialog(null, "�?נ�? מל�? �?ת כל השדות הדרושי�? לתהליך זה.", "מילוי שדות", JOptionPane.PLAIN_MESSAGE);
+   	     		 JOptionPane.showMessageDialog(null, "You must fill all the fields", "מילוי שדות", JOptionPane.PLAIN_MESSAGE);
    	     		}
-   	     		else
-   	     		{
-   	     			AnimalFactory animalFctory = new AnimalFactory(); // create factory object
-   	     			Animal a = animalFctory.createAnimal(++next_id,textField.getText(), 
-   	     				comboBox.getSelectedItem().toString(), comboBox_1.getSelectedItem().toString(), 
-   	     					Integer.parseInt(textField_3.getText()), 
-   	     					Integer.parseInt(textField_4.getText()));  // create the dog or cat object.
-   	     		
-   	     			serverTunnel.AnimalToDB(a,path);
-   	     			 	EventQueue.invokeLater(new Runnable() {
-	    					public void run() {
-	    						try {
-	    							MainWindow window = new MainWindow();
-	    							window.frame.setVisible(true);
+				else if((!textField_Age.getText().chars().allMatch(Character::isDigit)) ||
+						Integer.parseInt(textField_Age.getText())<0)
+        				JOptionPane.showMessageDialog(null, "Age must not be equal to zero and above.", "Details", JOptionPane.PLAIN_MESSAGE);
 
-	    						} catch (Exception e) {
-	    							e.printStackTrace();
-	    						}
-	    					}
-	    				});
-	        		 	
+        	
+        		else
+        		{
+   	     		
+   	     		if(rdbtnNewRadioButton.isSelected()){
+			    	injeqtion=1;
+		        }
+		        else if(rdbtnNo.isSelected()){
+		        	injeqtion=0;
+		        }	  	     
+   	     			AnimalFactory animalFctory = new AnimalFactory(); // create factory object
+   	     			Animal a = animalFctory.createAnimal(++next_id,textField_Name.getText(), 
+   	     				comboBox_Type.getSelectedItem().toString(), comboBox_Gender.getSelectedItem().toString(), 
+   	     					Integer.parseInt(textField_Age.getText()), 
+   	     					injeqtion);  // create the dog or cat object.
+   	     		serverTunnel tunnel=null;
+   	     			try {
+   	     				
+						 tunnel=serverTunnel.getInstance();
+					} catch (SQLException e1) {
+					
+						e1.printStackTrace();
+					}
+   	     			tunnel.AnimalToDB(a,selectedFile);
+   	     	 	EventQueue.invokeLater(new Runnable() {
+					public void run() {
+						try {
+							MainWindow.closeWindow();
+							MainWindow window =new MainWindow(MainWindow.user);
+							MainWindow.frame.setVisible(true);
+							
+
+						} catch (Exception e) {
+							e.printStackTrace();
+						}
+					}
+				});
+
+	   	     			serverTunnel.NotifyWatingListContact(a);
    	     		}
    	     		
    	     		 
@@ -181,36 +256,29 @@ public class AnimalInsertion_Panel extends JPanel {
    	     	
 			
 		});
-		btnSave.setBackground(new Color(70, 130, 180));
-		btnSave.setBounds(187, 382, 96, 46);
-		add(btnSave);
+		btn_Save.setBackground(new Color(70, 130, 180));
+		btn_Save.setBounds(179, 430, 96, 46);
+		add(btn_Save);
 		
+		
+		// Main label Deceleration & settings
+		JLabel Label_Main = new JLabel("Animal's Insertion");
+		Label_Main.setForeground(Color.WHITE);
+		Label_Main.setFont(new Font("Dialog", Font.BOLD, 32));
+		Label_Main.setBounds(232, 10, 319, 64);
+		add(Label_Main);
+		
+		
+		
+		
+		 Image image2=new ImageIcon(getClass().getResource("/pics/general3.jpg")).getImage().getScaledInstance(Label_Picture.getWidth(),Label_Picture.getHeight(), Image.SCALE_SMOOTH);	
+	    ImageIcon newImage3 = new ImageIcon(image2);
+	    Label_Picture.setIcon(newImage3);
+	    
+		 
 	
-		btnUploadPicture.setBackground(new Color(70, 130, 180));
-		btnUploadPicture.setBounds(313, 382, 120, 46);
-		add(btnUploadPicture);
-		
-		JLabel lblAnimalsInsertion = new JLabel("Animal's Insertion");
-		lblAnimalsInsertion.setForeground(Color.WHITE);
-		lblAnimalsInsertion.setFont(new Font("Dialog", Font.BOLD, 32));
-		lblAnimalsInsertion.setBounds(232, 10, 319, 64);
-		add(lblAnimalsInsertion);
-		
-		JLabel lblNewLabel = new JLabel("");
-		lblNewLabel.setBounds(398, 151, 268, 192);
-		lblNewLabel.setBorder(new LineBorder(new Color(0, 0, 0), 1));
-		add(lblNewLabel);
-		setVisible(false);
-	    ImageIcon image3 = new ImageIcon("C:/Users/Tomer/Desktop/general3.jpg");
-	    Image im3 = image3.getImage();
-	    Image myImg3 = im3.getScaledInstance(lblNewLabel.getWidth(), lblNewLabel.getHeight(),Image.SCALE_SMOOTH);
-	    ImageIcon newImage3 = new ImageIcon(myImg3);
-	    lblNewLabel.setIcon(newImage3);
 	    
-	    
-	    
-	     
-	    
+	      
 	    
 	}
 }
